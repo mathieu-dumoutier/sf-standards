@@ -2,6 +2,8 @@
 
 namespace App\Handler;
 
+use Symfony\Component\Serializer\SerializerInterface;
+
 /**
  * Class CsvResultHandler
  * @package App\Handler
@@ -11,15 +13,21 @@ class CsvResultHandler
 {
     // Dans cette classe on gérera la lecture du fichier CSV de résultats à l'EuroMillions
 
-    function lireCsv()
-    {
-        $csv = new \SplFileObject('storage/euromillions.csv','r');
+    private SerializerInterface : $serializer;
 
-        foreach($csv as $ligne) {
-            // on passe la ligne d'entete
-            return $ligne[1];
-        }
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
     }
 
+    public function lastResult() : array
+    {
+        return $this->serializer->decode(
+            file_get_contents("../strorage/euromillions_202002.csv",
+            'csv',
+            ['csv_delimiter' => ';']
+            )[1];
+        )
+    }
 
 }

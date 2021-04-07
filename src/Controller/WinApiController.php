@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Handler\CsvResultHandler;
+
 /**
  * Class WinApiController
  * @package App\Controller
@@ -12,9 +14,10 @@ class WinApiController
 {
     // Fournir une API qui donne le dernier résultat à l'EuroMillions
 
-    function afficheResultats() {
-        return $this->render('results.html.twig', [
-            'liste' => lireCsv(),
-        ]);
+    function showResults(CsvResultHandler : $csvResultHandler): Response
+    {
+        return $this->json(
+            $csvResultHandler->lastResult()['boules_gagnantes_en_ordre_croissant']
+        );
     }
 }
