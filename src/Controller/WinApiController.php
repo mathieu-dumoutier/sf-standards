@@ -14,12 +14,11 @@ class WinApiController extends AbstractController
     // Fournir une API qui donne le dernier résultat à l'EuroMillions
 	
     /**
-     * @Route("/dernier-tirage", name="dernier_tirage", methods={"GET"})
+     * @Route("/dernier-tirage", methods={"GET"})
      */
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(CsvResultHandler $csvResultHandler): Response
     {
-		$handler = new CsvResultHandler();
-		$dernierResultat = $handler->GetLastTirage();
+		string $dernierResultat = $csvResultHandler->getLastTirage();
         $response = new Response($dernierResultat);
 
         return $response;
